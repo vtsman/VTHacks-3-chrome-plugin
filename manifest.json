@@ -1,0 +1,30 @@
+{
+  "name": "Hackathon projects",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Allows you to browse comments on you phone",
+  "permissions": [
+    "tabs",
+    "webNavigation",
+    "web_accessible_resources"
+  ],
+  "background": {
+    "scripts": ["src/jquery.js", "src/bg.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "src/jquery.js",
+        "src/plugin.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    "src/*"
+  ]
+}
