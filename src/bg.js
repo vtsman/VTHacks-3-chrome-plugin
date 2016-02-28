@@ -1,13 +1,16 @@
 /**
  * Created by Spencer on 2/27/16.
  */
+
+var api = "http://172.16.44.76:1337";
+//var api = "http://localhost:1337";
     var content = '<div id="list">'+
     '<div class="hackathon_loader"></div>'+
     '</div>'
 var hackathon_load_content = function(){
     $("#list").remove();
     $("body").append(content);
-    $.get("http://localhost:1337/sugg/" + document.location.href, function(data){
+    $.get(api + "/sugg/" + document.location.href, function(data){
         $(".hackathon_link").remove();
         var obj = JSON.parse(data);
         console.log(obj);
@@ -19,7 +22,7 @@ var hackathon_load_content = function(){
         }
         $("#list").append('<div id="hackathon_keywords"></div>');
         obj.keywords.forEach(function(k){
-            $.get("http://localhost:1337/info/" + k.key, function(data){
+            $.get(api + "/info/" + k.key, function(data){
                 if(data != "none"){
                     $("#hackathon_keywords").append('<div class="h_k ' + data + '" title="' + k.word + '(' + data + ')'+ '" style="cursor: pointer;" onclick="window.location=' + "'https://en.wikipedia.org/wiki/" + k.word.split(" ").join("_") + "'" + ';">'+ k.word + "</div>");
                     if(k.wiki != undefined){
