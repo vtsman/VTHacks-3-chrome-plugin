@@ -5,16 +5,33 @@
     '<div class="hackathon_loader"></div>'+
     '</div>'
 var hackathon_load_content = function(){
+    $("#list").remove();
     $("body").append(content);
-    $.get("http://localhost:1337/" + document.location.href, function(data){
+    $.get("http://localhost:1337/sugg/" + document.location.href, function(data){
+        $(".hackathon_link").remove();
         var obj = JSON.parse(data);
-       console.log(obj);
+        console.log(obj);
         $(".hackathon_loader").remove();
         var links = "";
         for(var i in obj.rss){
             var r = obj.rss[i];
-            links += '<a href="'+ r.link + '" class="hackathon_link" alt="' + r.title + '">'+ r.title + '</a><br>';
+            links += '<a href="'+ r.link + '" class="hackathon_link" title="' + r.title + '">'+ r.title + '</a><br class="hackathon_link">';
         }
+        $("#list").append('<div id="hackathon_keywords"></div>');
+        obj.keywords.forEach(function(k){
+            $.get("http://localhost:1337/info/" + k.key, function(data){
+                if(data != "none"){
+                    $("#hackathon_keywords").append('<div class="h_k ' + data + '" title="' + k.word + '(' + data + ')'+ '" style="cursor: pointer;" onclick="window.location=' + "'https://en.wikipedia.org/wiki/" + k.word.split(" ").join("_") + "'" + ';">'+ k.word + "</div>");
+                    if(k.wiki != undefined){
+
+                    }
+                }
+            });
+        });
         $("#list").append(links);
     });
+}
+
+function wrapText(text, f){
+    var replace_str = $('body').html().replace(new RegExp(text, "g"), f(text)); $('body').html(replace_str);
 }
